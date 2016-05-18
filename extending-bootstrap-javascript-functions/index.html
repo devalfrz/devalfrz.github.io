@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>devalfrz io</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/stylesheets/styles.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Alfredo Rius' Github IO</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="https://blog.behuns.com">Blog</a></li>
+            <li><a href="https://blog.behuns.com/blogger/alfredo-rius/">About Me</a></li>
+            <li><a href="https://github.com/devalfrz">Github Repos</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h1>Extending Bootstrap Javascript Functions</h1>
+      </div>
+      <p class="lead">This is a small tutorial on how to extend functionality to modules in bootstrap such as modals and carousels altering their prototypes.</p>
+      <p>This is just an example of what can be done messing with the prototypes inside of Bootstrap. First of all we need to stablish some objectives.</p>
+      <h2>Objectives</h2> 
+      <h3>Create A Regular Carousel</h3>
+      <pre>
+$(function(){
+  
+  // Initialize Carousel
+  $('#carousel-1').carousel({
+    pause: "false",
+    interval: 5000,
+  });
+  $('#carousel-2').carousel({
+    pause: "false",
+    interval: 5000,
+  });
+});</pre>
+  <div id="carousel-1" class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <p>Fher</p>
+      </div>
+      
+      <div class="item">
+        <p>Juanma</p>
+      </div>
+
+      <div class="item">
+        <p>Bibis</p>
+      </div>
+      
+    </div>
+
+  </div>
+
+
+
+
+  <div id="carousel-2" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-2" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-2" data-slide-to="1"></li>
+      <li data-target="#carousel-2" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/55d3a9a5-2450-40b6-9ac0-855f9df8384e.JPG" alt="Fher" width="460" height="345">
+      </div>
+
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/d30f2383-893a-4b7c-90a8-4c03699a20f8.jpg" alt="Juanma" width="460" height="345">
+      </div>
+    
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/a9e52f8b-4dfc-4a5f-b51a-e5ee4a3526c1.JPG" alt="Bibis" width="460" height="345">
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#carousel-2" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-2" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+      <h3>One Right And The Other Left</h3>
+      <p>As an arbitrary objective (actual use-case) we will stablish the direction in which we want the carousel to move. We will move the first one to the right and the second one to the left (default)</p>
+      <div class="screenshot"><img src="static/images/right-left.png" alt="right-left"></div>
+      <p>Remember that we are changing direction, so items that are running in reverse should be placed accordingly.</p>
+      <pre>
+$(function(){
+
+  // Override the cycle function to set direction
+  $.extend($.fn.carousel.Constructor.prototype, {
+    next: function () {
+      if (this.sliding) return
+      return this.slide((this.options.direction == 'right') ? 'prev' : 'next')
+    },
+    prev: function () {
+      if (this.sliding) return
+      return this.slide((this.options.direction == 'right') ? 'next' : 'prev')
+    },
+  });
+
+  // Initialize Carousel
+  $('#carousel-3').carousel({
+    interval: 5000,
+    direction:'right',
+  });
+  $('#carousel-4').carousel({
+    pause: "false",
+    interval: 5000,
+    direction:'left',
+  });
+});</pre>
+
+  <div id="carousel-3" class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <p>Fher</p>
+      </div>
+
+      <div class="item">
+        <p>Bibis</p>
+      </div>
+      
+      <div class="item">
+        <p>Juanma</p>
+      </div>
+    
+    </div>
+
+  </div>
+
+
+
+
+  <div id="carousel-4" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-4" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-4" data-slide-to="1"></li>
+      <li data-target="#carousel-4" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/55d3a9a5-2450-40b6-9ac0-855f9df8384e.JPG" alt="Fher" width="460" height="345">
+      </div>
+
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/d30f2383-893a-4b7c-90a8-4c03699a20f8.jpg" alt="Juanma" width="460" height="345">
+      </div>
+    
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/a9e52f8b-4dfc-4a5f-b51a-e5ee4a3526c1.JPG" alt="Bibis" width="460" height="345">
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#carousel-4" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-4" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+      <h3>Single Control</h3>
+      <p>We want to be able to control both carousels with the same controls and to be synked.</p>
+      <pre>
+$(function(){
+
+  // Override the cycle function to set direction
+  $.extend($.fn.carousel.Constructor.prototype, {
+    next: function () {
+      if (this.sliding) return
+      // Lock other carousels
+      if(this.options.lock instanceof jQuery){
+        this.options.lock.each(function(){
+          $(this).carousel('next');
+        });
+      }
+      return this.slide((this.options.direction == 'right') ? 'prev' : 'next')
+    },
+    prev: function () {
+      if (this.sliding) return
+      // Lock other carousels
+      if(this.options.lock instanceof jQuery){
+        this.options.lock.each(function(){
+          $(this).carousel('prev');
+        });
+      }
+      return this.slide((this.options.direction == 'right') ? 'next' : 'prev')
+    },
+  });
+  
+  // Initialize Carousels
+  $('#carousel-5').carousel({
+    interval: false,
+    direction:'right',
+  });
+  $('#carousel-6').carousel({
+    pause: "false",
+    interval: 5000,
+    direction:'left',
+    lock:$('#carousel-5'), // lock #carousel to #carousel-image
+  });
+});</pre>
+  <div id="carousel-5" class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <p>Fher</p>
+      </div>
+
+      <div class="item">
+        <p>Bibis</p>
+      </div>
+      
+      <div class="item">
+        <p>Juanma</p>
+      </div>
+    
+    </div>
+
+  </div>
+
+
+
+
+  <div id="carousel-6" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-6" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-6" data-slide-to="1"></li>
+      <li data-target="#carousel-6" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/55d3a9a5-2450-40b6-9ac0-855f9df8384e.JPG" alt="Fher" width="460" height="345">
+      </div>
+
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/d30f2383-893a-4b7c-90a8-4c03699a20f8.jpg" alt="Juanma" width="460" height="345">
+      </div>
+    
+      <div class="item">
+        <img src="http://fotorius.behuns.com/media/image_styles/3/images/a9e52f8b-4dfc-4a5f-b51a-e5ee4a3526c1.JPG" alt="Bibis" width="460" height="345">
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#carousel-6" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-6" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+    <h2>Profit</h2>
+    </div><!-- /.container -->
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted"><a href="https://blog.behuns.com/blogger/alfredo-rius">Alfredo Rius</a></p>
+      </div>
+    </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+$(function(){
+
+  // Override the cycle function to set direction
+  $.extend($.fn.carousel.Constructor.prototype, {
+    next: function () {
+      if (this.sliding) return
+      if(this.options.lock instanceof jQuery){
+        this.options.lock.each(function(){
+          $(this).carousel('next');
+        });
+      }
+      return this.slide((this.options.direction == 'right') ? 'prev' : 'next')
+    },
+    prev: function () {
+      if (this.sliding) return
+      if(this.options.lock instanceof jQuery){
+        this.options.lock.each(function(){
+          $(this).carousel('prev');
+        });
+      }
+      return this.slide((this.options.direction == 'right') ? 'next' : 'prev')
+    },
+  });
+
+  $('#carousel-1').carousel({
+    pause: "false",
+    interval: 5000,
+  });
+  $('#carousel-2').carousel({
+    pause: "false",
+    interval: 5000,
+  });
+  
+  $('#carousel-3').carousel({
+    interval: 5000,
+    direction:'right',
+  });
+  $('#carousel-4').carousel({
+    pause: "false",
+    interval: 5000,
+    direction:'left',
+  });
+  
+  $('#carousel-5').carousel({
+    interval: false,
+    direction:'right',
+  });
+  $('#carousel-6').carousel({
+    pause: "false",
+    interval: 5000,
+    direction:'left',
+    lock:$('#carousel-5'), // lock #carousel to #carousel-image
+  });
+});
+    </script>
+  </body>
+</html>
+

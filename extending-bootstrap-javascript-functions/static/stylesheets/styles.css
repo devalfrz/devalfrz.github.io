@@ -1,0 +1,75 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+/* line 3, ../sass/styles.scss */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/* line 7, ../sass/styles.scss */
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+/* line 11, ../sass/styles.scss */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+/* line 25, ../sass/styles.scss */
+body > .container {
+  padding: 60px 15px 0;
+}
+
+/* line 28, ../sass/styles.scss */
+.container .text-muted {
+  margin: 20px 0;
+}
+
+/* line 32, ../sass/styles.scss */
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* line 37, ../sass/styles.scss */
+code {
+  font-size: 80%;
+}
+
+/* line 44, ../sass/styles.scss */
+.carousel-inner > .item > img, .carousel-inner > .item > a > img {
+  width: 100%;
+  margin: auto;
+}
+/* line 49, ../sass/styles.scss */
+.carousel-inner p {
+  text-align: center;
+  background-color: gray;
+  color: white;
+  font-size: 1.6em;
+  font-weight: bold;
+  padding: 20px;
+}
+
+/* line 58, ../sass/styles.scss */
+.screenshot {
+  text-align: center;
+  margin: 20px auto;
+}
+/* line 60, ../sass/styles.scss */
+.screenshot > img {
+  display: inline-block;
+  padding: 5px;
+  background-color: lightgray;
+  border: solid gray 1px;
+}
